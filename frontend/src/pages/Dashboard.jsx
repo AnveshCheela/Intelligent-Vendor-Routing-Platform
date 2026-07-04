@@ -107,14 +107,15 @@ export default function Dashboard() {
         />
         <MetricCard 
           title="Avg Routing Latency" 
-          value={metrics?.avg_latency_ms}
-          suffix="ms"
+          value={metrics ? `${metrics.avg_latency_ms.toFixed(0)}ms` : '0ms'} 
+          trend={metrics ? `${metrics.latency_change_ms}ms vs last hr` : ''} 
+          trendUp={metrics?.latency_change_ms < 0} 
         />
-        <div className="card p-5 relative overflow-hidden">
-          <h3 className="text-sm font-medium text-surface-inverse/70 mb-2">Routing Success Rate</h3>
-          <div className="text-3xl font-bold text-surface-inverse">{metrics?.success_rate}%</div>
-          <div className="absolute bottom-0 left-0 w-full h-1 bg-surface-low">
-            <div className="h-full bg-emerald-500" style={{ width: `${metrics?.success_rate}%` }}></div>
+        <div className="card p-6 flex flex-col justify-between">
+          <div className="text-surface-inverse/70 text-sm font-medium mb-2">Global Success Rate</div>
+          <div className="text-3xl font-bold text-surface-inverse">{metrics ? metrics.success_rate.toFixed(2) : '0.00'}%</div>
+          <div className="w-full bg-surface-high h-2 mt-4 rounded-full overflow-hidden">
+            <div className="h-full bg-emerald-500" style={{ width: `${metrics ? metrics.success_rate : 0}%` }}></div>
           </div>
         </div>
       </div>

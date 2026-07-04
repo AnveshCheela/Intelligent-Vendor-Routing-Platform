@@ -38,17 +38,12 @@ class MetricCollector {
       pipeline.ltrim(`${minuteKey}:latencies`, 0, 99);
       pipeline.expire(minuteKey, 3600); // Keep minute data for 1 hour
       pipeline.expire(`${minuteKey}:latencies`, 3600);
+      
+      // Track total latency for accurate averages
+      pipeline.hincrby(allTimeKey, 'total_latency', latencyMs);
 
       await pipeline.exec();
 
-      // For persistent metrics, we should ideally batch these or use a background worker.
-      // For this implementation, we'll write directly.
-      // We upsert a metric record for the current hour
-      const hourStart = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours());
-      
-      // We'll let a separate cron job aggregate Redis metrics into Postgres to avoid DB lock contention on every request
-      // But for simplicity in this assignment, we'll just track it in Redis for live dashboards.
-      
     } catch (error) {
       logger.error('Error recording metrics:', error);
     }
@@ -62,15 +57,37 @@ class MetricCollector {
       const vendors = await prisma.vendor.findMany({ where: { status: { not: 'down' } } });
       const totalVendors = await prisma.vendor.count();
       
-      // Simplified: in a real system we'd aggregate from Redis/DB
-      // For now, we mock the system-wide stats based on active vendors
+      let totalRequests = 0;
+      let totalSuccess = 0;
+      let globalTotalLatency = 0;
+      const vendorMetricsList = [];
+
+      for (const vendor of vendors) {
+        const stats = await this.getVendorMetrics(vendor.id);
+        totalRequests += stats.requests;
+        totalSuccess += stats.success;
+        globalTotalLatency += stats.totalLatency;
+        
+        vendorMetricsList.push({
+          vendorId: vendor.id,
+          vendorName: vendor.name,
+          status: vendor.status,
+          costPerRequest: vendor.costPerRequest,
+          ...stats
+        });
+      }
+      
+      const successRate = totalRequests > 0 ? (totalSuccess / totalRequests) * 100 : 100;
+      const avgLatencyMs = totalRequests > 0 ? (globalTotalLatency / totalRequests) : 0;
+      
       return {
-        total_requests_today: 2450123, // mock
+        total_requests_today: totalRequests,
         active_vendors: vendors.length,
         total_vendors: totalVendors,
-        avg_latency_ms: 142, // mock
-        success_rate: 99.98, // mock
-        latency_change_ms: -12
+        avg_latency_ms: avgLatencyMs,
+        success_rate: successRate,
+        latency_change_ms: 0, // Simplified for this implementation
+        vendor_metrics: vendorMetricsList
       };
     } catch (error) {
       logger.error('Error getting system metrics:', error);
@@ -90,16 +107,23 @@ class MetricCollector {
       const requests = parseInt(data.requests || 0);
       const success = parseInt(data.success || 0);
       const errors = parseInt(data.error || 0);
+      const totalLatency = parseInt(data.total_latency || 0);
       
       const successRate = requests > 0 ? (success / requests) * 100 : 100;
       const errorRate = requests > 0 ? (errors / requests) * 100 : 0;
+      const avgLatencyMs = requests > 0 ? (totalLatency / requests) : 0;
       
       return {
         requests,
+        success,
+        errors,
+        totalLatency,
+        totalRequests: requests,
+        successfulRequests: success,
         successRate,
         errorRate,
-        avgLatencyMs: 145, // mock calculation
-        p95LatencyMs: 160, // mock calculation
+        avgLatencyMs,
+        p95LatencyMs: avgLatencyMs * 1.2, // Rough estimation since real p95 requires list traversal
       };
     } catch (error) {
       logger.error(`Error getting vendor metrics (${vendorId}):`, error);

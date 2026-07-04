@@ -9,14 +9,18 @@ export default function HealthDashboard() {
   const [error, setError] = useState(null);
   const [lastUpdated, setLastUpdated] = useState(new Date());
 
+  const [metrics, setMetrics] = useState(null);
+
   const fetchHealthData = async () => {
     try {
-      const [vendorsRes, summaryRes] = await Promise.all([
+      const [vendorsRes, summaryRes, metricsRes] = await Promise.all([
         api.getVendors({ limit: 100 }),
-        api.getVendorSummary()
+        api.getVendorSummary(),
+        api.getSystemMetrics()
       ]);
       setVendors(vendorsRes.data.vendors);
       setSummary(summaryRes.data);
+      setMetrics(metricsRes.data);
       setLastUpdated(new Date());
       setError(null);
     } catch (err) {
@@ -81,9 +85,17 @@ export default function HealthDashboard() {
         ) : (
           vendors.map(vendor => {
             const isDown = vendor.status === 'down';
-            const latency = isDown ? '-' : Math.floor(Math.random() * 50) + vendor.costPerRequest * 1000;
-            const successRate = isDown ? 0 : 99.0 + (Math.random());
-            const availability = isDown ? 0 : 99.8 + (Math.random() * 0.2);
+            
+            // Match this vendor with the real metrics from the backend
+            const vendorMetrics = metrics?.vendor_metrics?.find(m => m.vendorId === vendor.id);
+            
+            // Pull real stats
+            const successRate = isDown ? 0 : (vendorMetrics?.successRate || 100);
+            const latency = isDown ? '-' : (vendorMetrics?.avgLatencyMs || 0);
+            const totalRequests = vendorMetrics?.totalRequests || 0;
+            
+            // Calculate availability strictly based on real errors if we have requests, else 100%
+            const availability = totalRequests > 0 ? successRate : (isDown ? 0 : 100);
 
             return (
               <div key={vendor.id} className={`card p-5 border-t-4 ${isDown ? 'border-t-red-500 bg-red-500/5' : 'border-t-emerald-500'}`}>

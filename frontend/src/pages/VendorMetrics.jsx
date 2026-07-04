@@ -9,12 +9,8 @@ export default function VendorMetrics() {
   const fetchMetrics = async () => {
     setLoading(true);
     try {
-      const [metricsRes, vendorsRes] = await Promise.all([
-        api.getSystemMetrics(),
-        api.getVendors({ limit: 100 })
-      ]);
-      setMetrics(metricsRes.data);
-      setVendors(vendorsRes.data.vendors);
+      const res = await api.getSystemMetrics();
+      setMetrics(res.data);
     } catch (err) {
       console.error("Failed to fetch metrics", err);
     } finally {
@@ -73,18 +69,20 @@ export default function VendorMetrics() {
             Loading metrics...
           </div>
         ) : (
-          vendors.map((vendor, idx) => {
+          metrics?.vendor_metrics?.map((vendor, idx) => {
             const isDown = vendor.status === 'down';
-            // Simulated per-vendor metrics
-            const successRate = isDown ? 0 : 95 + Math.random() * 5;
-            const avgLatency = isDown ? 0 : 100 + Math.random() * 50 + vendor.costPerRequest * 1000;
-            const total = 500 + Math.floor(Math.random() * 2000);
-            const successCount = Math.floor(total * (successRate / 100));
-            const failCount = total - successCount;
-            // Mocking availability and error rate based on success rate for detailed UI matching
-            const availability = successRate > 0 ? Math.min(100, successRate + (Math.random() * 2)) : 0;
-            const errorRate = 100 - successRate;
-            const isHealthy = successRate > 50;
+            
+            // Using actual perfect metrics from backend
+            const successRate = vendor.successRate;
+            const avgLatency = vendor.avgLatencyMs;
+            const total = vendor.totalRequests;
+            const successCount = vendor.successfulRequests;
+            const failCount = vendor.errors;
+            
+            // Availability calculation based on success rate if there are requests, otherwise 100 if healthy
+            const availability = total > 0 ? successRate : (isDown ? 0 : 100);
+            const errorRate = vendor.errorRate;
+            const isHealthy = vendor.status === 'active' && successRate >= 50;
 
             return (
               <div key={idx} className="card p-5">
