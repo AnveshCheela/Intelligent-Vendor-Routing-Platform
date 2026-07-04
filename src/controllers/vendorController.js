@@ -104,11 +104,23 @@ class VendorController {
       const totalActive = vendors.filter(v => v.status === 'healthy').length;
       const degradedDown = vendors.filter(v => v.status === 'degraded' || v.status === 'down').length;
       
+      // Fetch real metrics instead of mocking
+      let realAvgLatency = 0;
+      let realTotalSpend = 0;
+      try {
+        const { default: MetricCollector } = await import('../services/MetricCollector.js');
+        const sysMetrics = await MetricCollector.getSystemMetrics();
+        realAvgLatency = sysMetrics.avg_latency_ms || 0;
+        realTotalSpend = sysMetrics.total_spend || 0;
+      } catch (err) {
+        logger.error('Failed to fetch real metrics for summary', err);
+      }
+
       res.json(success({
         totalActive,
         degradedDown,
-        avgLatencyMs: 142, // Mocked for UI
-        monthlySpendEst: 4200 // Mocked for UI
+        avgLatencyMs: Math.round(realAvgLatency), 
+        monthlySpendEst: realTotalSpend 
       }));
     } catch (err) {
       next(err);
