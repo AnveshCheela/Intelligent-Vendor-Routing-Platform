@@ -57,7 +57,7 @@ export default function VendorMetrics() {
         </div>
         <div className="card p-5 border-l-4 border-l-emerald-500">
           <h3 className="text-sm font-medium text-surface-inverse/70 mb-2">Overall Success Rate</h3>
-          <div className="text-3xl font-bold text-emerald-400">{metrics?.success_rate || '0.0'}%</div>
+          <div className="text-3xl font-bold text-emerald-400">{metrics ? metrics.success_rate.toFixed(2) : '0.00'}%</div>
         </div>
       </div>
 
