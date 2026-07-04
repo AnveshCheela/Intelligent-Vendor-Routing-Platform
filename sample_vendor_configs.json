@@ -1,0 +1,47 @@
+[
+  {
+    "name": "Stripe Identity",
+    "baseUrl": "https://api.stripe.com/v1/identity",
+    "capability": "kyc",
+    "priority": 1,
+    "weight": 70,
+    "costPerRequest": 1.50,
+    "rateLimit": 100,
+    "timeoutMs": 2000,
+    "status": "healthy",
+    "metadata": {
+      "capabilities": ["kyc", "document_verification", "selfie_match"],
+      "region": "us-east-1"
+    }
+  },
+  {
+    "name": "Jumio Core",
+    "baseUrl": "https://api.jumio.com/api/net/v2",
+    "capability": "kyc",
+    "priority": 2,
+    "weight": 30,
+    "costPerRequest": 0.80,
+    "rateLimit": 50,
+    "timeoutMs": 3500,
+    "status": "healthy",
+    "metadata": {
+      "capabilities": ["kyc", "aml", "age_verification"],
+      "region": "eu-central-1"
+    }
+  },
+  {
+    "name": "Microblink OCR",
+    "baseUrl": "https://api.microblink.com/recognize",
+    "capability": "ocr",
+    "priority": 1,
+    "weight": 100,
+    "costPerRequest": 0.15,
+    "rateLimit": 500,
+    "timeoutMs": 1000,
+    "status": "healthy",
+    "metadata": {
+      "capabilities": ["ocr", "id_barcode_parsing"],
+      "accuracy": 0.99
+    }
+  }
+]
