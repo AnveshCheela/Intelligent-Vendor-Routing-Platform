@@ -42,10 +42,13 @@ router.get('/health', healthController.getHealth);
  *             properties:
  *               capability:
  *                 type: string
+ *               routing_preference:
+ *                 type: string
  *               payload:
  *                 type: object
  *             example:
  *               capability: "kyc"
+ *               routing_preference: "lowest_cost"
  *               payload: { "firstName": "John", "lastName": "Doe" }
  *               requirements: { "maxLatencyMs": 2000, "preferLowCost": true }
  *     responses:
