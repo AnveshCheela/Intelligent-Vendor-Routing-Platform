@@ -206,7 +206,7 @@ export default function TestRequest() {
                   </div>
                   <div className="bg-surface border border-surface-high p-4 rounded-xl">
                     <p className="text-xs text-outline-default mb-1 uppercase tracking-wider font-semibold">Strategy Used</p>
-                    <p className="text-lg font-medium text-primary">{result.strategy_used?.replace('_', ' ') || result.strategy?.replace('_', ' ') || result.data?.strategyUsed?.replace('_', ' ') || 'Auto-Evaluated'}</p>
+                    <p className="text-lg font-medium text-primary">{result.strategyUsed?.replace('_', ' ') || result.strategy_used?.replace('_', ' ') || result.strategy?.replace('_', ' ') || result.data?.strategyUsed?.replace('_', ' ') || 'Auto-Evaluated'}</p>
                   </div>
                   <div className="bg-surface border border-surface-high p-4 rounded-xl">
                     <p className="text-xs text-outline-default mb-1 uppercase tracking-wider font-semibold">Round Trip</p>
