@@ -4,9 +4,12 @@ import { NavLink, Link, useLocation } from 'react-router-dom';
 const navItems = [
   { name: 'Dashboard', path: '/', icon: 'dashboard' },
   { name: 'Vendors', path: '/vendors', icon: 'storefront' },
+  { name: 'Route Tester', path: '/test', icon: 'science' },
+  { name: 'Metrics', path: '/metrics', icon: 'monitoring' },
   { name: 'Routing Logs', path: '/logs', icon: 'list_alt' },
-  { name: 'Configuration', path: '/config', icon: 'tune' },
-  { name: 'Test Request', path: '/test', icon: 'science' },
+  { name: 'Health', path: '/health', icon: 'favorite' },
+  { name: 'AI Rule Generator', path: '/config', icon: 'smart_toy' },
+  { name: 'Global Settings', path: '/settings', icon: 'settings' },
 ];
 
 export default function Sidebar() {

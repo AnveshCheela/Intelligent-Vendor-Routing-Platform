@@ -7,10 +7,12 @@ import { ToastProvider } from './context/ToastContext';
 // Lazy load pages for better performance
 const Dashboard = React.lazy(() => import('./pages/Dashboard'));
 const VendorList = React.lazy(() => import('./pages/VendorList'));
-// const VendorMetrics = React.lazy(() => import('./pages/VendorMetrics'));
+const VendorMetrics = React.lazy(() => import('./pages/VendorMetrics'));
 const RoutingLogs = React.lazy(() => import('./pages/RoutingLogs'));
 const Configuration = React.lazy(() => import('./pages/Configuration'));
 const TestRequest = React.lazy(() => import('./pages/TestRequest'));
+const HealthDashboard = React.lazy(() => import('./pages/HealthDashboard'));
+const GlobalSettings = React.lazy(() => import('./pages/GlobalSettings'));
 
 // Placeholder for unbuilt pages
 const Placeholder = ({ title }) => (
@@ -38,9 +40,12 @@ export default function App() {
               <Routes>
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/vendors" element={<VendorList />} />
-                <Route path="/logs" element={<RoutingLogs />} />
-                <Route path="/config" element={<Configuration />} />
                 <Route path="/test" element={<TestRequest />} />
+                <Route path="/metrics" element={<VendorMetrics />} />
+                <Route path="/logs" element={<RoutingLogs />} />
+                <Route path="/health" element={<HealthDashboard />} />
+                <Route path="/config" element={<Configuration />} />
+                <Route path="/settings" element={<GlobalSettings />} />
               </Routes>
             </React.Suspense>
           </main>
