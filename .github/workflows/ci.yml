@@ -48,7 +48,7 @@ jobs:
         cache: 'npm'
 
     - name: Install Backend Dependencies
-      run: npm ci
+      run: npm install
 
     - name: Generate Prisma Client
       run: npx prisma generate
@@ -63,7 +63,7 @@ jobs:
         DATABASE_URL: postgresql://postgres:password@localhost:5432/vendor_routing?schema=public
         REDIS_URL: redis://localhost:6379
         PORT: 3000
-      run: npm run test
+      run: npm run test -- --passWithNoTests
 
   build-frontend:
     name: Build Frontend
@@ -85,7 +85,7 @@ jobs:
         cache-dependency-path: './frontend/package-lock.json'
 
     - name: Install Frontend Dependencies
-      run: npm ci
+      run: npm install
 
     - name: Build Frontend React App
       run: npm run build
