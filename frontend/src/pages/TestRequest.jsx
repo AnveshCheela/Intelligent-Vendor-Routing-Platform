@@ -9,6 +9,7 @@ export default function TestRequest() {
   };
 
   const [capability, setCapability] = useState('kyc');
+  const [strategy, setStrategy] = useState('');
   const [payloadText, setPayloadText] = useState(defaultPayloads.kyc);
   
   const [loading, setLoading] = useState(false);
@@ -20,6 +21,17 @@ export default function TestRequest() {
     { id: 'ocr', label: 'OCR / Document' },
     { id: 'fraud', label: 'Fraud Check' },
     { id: 'kyc_aml', label: 'KYC + AML Screening' }
+  ];
+
+  const strategies = [
+    { id: '', label: 'Auto (Use Global AI Config)' },
+    { id: 'priority', label: 'Priority' },
+    { id: 'weighted', label: 'Weighted' },
+    { id: 'round_robin', label: 'Round Robin' },
+    { id: 'lowest_latency', label: 'Lowest Latency' },
+    { id: 'lowest_cost', label: 'Lowest Cost' },
+    { id: 'health_based', label: 'Health Based' },
+    { id: 'feature_based', label: 'Feature Based' }
   ];
 
   const handleTestRoute = async () => {
@@ -40,6 +52,10 @@ export default function TestRequest() {
         capability,
         payload: parsedPayload
       };
+      
+      if (strategy) {
+        requestBody.routing_preference = strategy;
+      }
 
       const startTime = performance.now();
       const res = await fetch('/api/route', {
@@ -82,21 +98,36 @@ export default function TestRequest() {
           </h2>
           
           <div className="space-y-6 flex-1 flex flex-col">
-            <div>
-              <label className="block text-sm font-medium text-outline mb-2">Required Capability</label>
-              <select 
-                value={capability}
-                onChange={(e) => {
-                  const newCap = e.target.value;
-                  setCapability(newCap);
-                  setPayloadText(defaultPayloads[newCap]);
-                }}
-                className="w-full bg-surface-low border border-surface-high rounded-lg pl-4 pr-10 py-3 text-surface-inverse focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary cursor-pointer"
-              >
-                {capabilities.map(cap => (
-                  <option key={cap.id} value={cap.id}>{cap.label}</option>
-                ))}
-              </select>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-outline mb-2">Required Capability</label>
+                <select 
+                  value={capability}
+                  onChange={(e) => {
+                    const newCap = e.target.value;
+                    setCapability(newCap);
+                    setPayloadText(defaultPayloads[newCap]);
+                  }}
+                  className="w-full bg-surface-low border border-surface-high rounded-lg pl-4 pr-10 py-3 text-surface-inverse focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary cursor-pointer"
+                >
+                  {capabilities.map(cap => (
+                    <option key={cap.id} value={cap.id}>{cap.label}</option>
+                  ))}
+                </select>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-outline mb-2">Override Strategy</label>
+                <select 
+                  value={strategy}
+                  onChange={(e) => setStrategy(e.target.value)}
+                  className="w-full bg-surface-low border border-surface-high rounded-lg pl-4 pr-10 py-3 text-surface-inverse focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary cursor-pointer"
+                >
+                  {strategies.map(strat => (
+                    <option key={strat.id} value={strat.id}>{strat.label}</option>
+                  ))}
+                </select>
+              </div>
             </div>
 
             <div className="flex-1 flex flex-col min-h-[300px]">
