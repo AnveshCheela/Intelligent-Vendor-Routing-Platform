@@ -45,6 +45,7 @@ Content-Type: application/json
 
 {
   "capability": "kyc",
+  "routing_preference": "lowest_cost",
   "payload": {
     "userId": "user_88321",
     "documentType": "passport",
