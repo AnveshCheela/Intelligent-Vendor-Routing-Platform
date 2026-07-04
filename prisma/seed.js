@@ -6,6 +6,20 @@ const prisma = new PrismaClient();
 async function main() {
   console.log('Start seeding...');
 
+  // Check if already seeded properly
+  const existingVendors = await prisma.vendor.count();
+  if (existingVendors === 10) {
+    console.log('Database is already seeded with exactly 10 vendors. Skipping seed.');
+    return;
+  }
+  
+  if (existingVendors > 0) {
+    console.log(`Database has ${existingVendors} vendors. Wiping to re-seed to exactly 10...`);
+    await prisma.routingLog.deleteMany();
+    await prisma.routingRule.deleteMany();
+    await prisma.vendor.deleteMany();
+  }
+
   // 1. Seed Vendors
   const vendors = [
     { name: 'Stripe Identity', capability: 'kyc', priority: 1, weight: 15, costPerRequest: 0.05, rateLimit: 100, timeoutMs: 5000, status: 'healthy', metadata: { avgLatency: 120, capabilities: ['kyc', 'kyc_aml', 'identity'] } },
