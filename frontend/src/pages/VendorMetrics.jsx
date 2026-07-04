@@ -140,8 +140,8 @@ export default function VendorMetrics() {
                     </div>
                     <div>
                       <div className="text-xs text-outline-default mb-1">Total Spend</div>
-                      <div className="text-lg font-semibold text-surface-inverse">${(vendor.totalSpend || 0).toFixed(2)}</div>
-                      <div className="text-[10px] text-outline-default mt-1">${vendor.costPerRequest}/req</div>
+                      <div className="text-lg font-semibold text-surface-inverse">₹{(vendor.totalSpend || 0).toFixed(2)}</div>
+                      <div className="text-[10px] text-outline-default mt-1">₹{vendor.costPerRequest}/req</div>
                     </div>
                   </div>
                 </div>

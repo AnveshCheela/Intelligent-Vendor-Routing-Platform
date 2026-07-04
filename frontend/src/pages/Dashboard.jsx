@@ -107,7 +107,7 @@ export default function Dashboard() {
         />
         <MetricCard 
           title="Overall Monthly Spend" 
-          value={metrics ? `$${metrics.total_spend.toFixed(2)}` : '$0.00'} 
+          value={metrics ? `₹${metrics.total_spend.toFixed(2)}` : '₹0.00'} 
           trend="Real-time aggregation" 
           trendUp={false} 
         />
