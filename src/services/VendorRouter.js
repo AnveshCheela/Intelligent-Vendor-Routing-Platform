@@ -125,6 +125,7 @@ class VendorRouter {
       return {
         status: "SUCCESS",
         vendorUsed: vendorInstance.getName(),
+        strategyUsed: strategyInstance.getName(),
         routingReason: reasons.join(' || '),
         latencyMs: latency,
         cost: vendorInstance.getCost(),
