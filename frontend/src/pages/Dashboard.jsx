@@ -106,6 +106,12 @@ export default function Dashboard() {
           trend="neutral"
         />
         <MetricCard 
+          title="Overall Monthly Spend" 
+          value={metrics ? `$${metrics.total_spend.toFixed(2)}` : '$0.00'} 
+          trend="Real-time aggregation" 
+          trendUp={false} 
+        />
+        <MetricCard 
           title="Avg Routing Latency" 
           value={metrics ? `${metrics.avg_latency_ms.toFixed(0)}ms` : '0ms'} 
           trend={metrics ? `${metrics.latency_change_ms}ms vs last hr` : ''} 

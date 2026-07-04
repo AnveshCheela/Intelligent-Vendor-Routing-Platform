@@ -42,6 +42,11 @@ class MetricCollector {
       // Track total latency for accurate averages
       pipeline.hincrby(allTimeKey, 'total_latency', latencyMs);
 
+      // Track exact financial spend if the request was successful
+      if (success && cost > 0) {
+        pipeline.hincrbyfloat(allTimeKey, 'total_cost', cost);
+      }
+
       await pipeline.exec();
 
     } catch (error) {
@@ -60,6 +65,7 @@ class MetricCollector {
       let totalRequests = 0;
       let totalSuccess = 0;
       let globalTotalLatency = 0;
+      let globalTotalSpend = 0;
       const vendorMetricsList = [];
 
       for (const vendor of vendors) {
@@ -67,6 +73,7 @@ class MetricCollector {
         totalRequests += stats.requests;
         totalSuccess += stats.success;
         globalTotalLatency += stats.totalLatency;
+        globalTotalSpend += stats.totalSpend;
         
         vendorMetricsList.push({
           vendorId: vendor.id,
@@ -86,6 +93,7 @@ class MetricCollector {
         total_vendors: totalVendors,
         avg_latency_ms: avgLatencyMs,
         success_rate: successRate,
+        total_spend: globalTotalSpend,
         latency_change_ms: 0, // Simplified for this implementation
         vendor_metrics: vendorMetricsList
       };
@@ -108,6 +116,7 @@ class MetricCollector {
       const success = parseInt(data.success || 0);
       const errors = parseInt(data.error || 0);
       const totalLatency = parseInt(data.total_latency || 0);
+      const totalSpend = parseFloat(data.total_cost || 0);
       
       const successRate = requests > 0 ? (success / requests) * 100 : 100;
       const errorRate = requests > 0 ? (errors / requests) * 100 : 0;
@@ -118,6 +127,7 @@ class MetricCollector {
         success,
         errors,
         totalLatency,
+        totalSpend,
         totalRequests: requests,
         successfulRequests: success,
         successRate,

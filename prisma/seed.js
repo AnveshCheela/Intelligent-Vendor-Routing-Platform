@@ -8,61 +8,16 @@ async function main() {
 
   // 1. Seed Vendors
   const vendors = [
-    {
-      name: 'Stripe Identity',
-      capability: 'kyc',
-      priority: 1,
-      weight: 70,
-      costPerRequest: 0.05,
-      rateLimit: 100,
-      timeoutMs: 5000,
-      status: 'healthy',
-      metadata: { avgLatency: 120, capabilities: ['kyc', 'kyc_aml', 'identity'] }
-    },
-    {
-      name: 'Jumio Core',
-      capability: 'kyc',
-      priority: 2,
-      weight: 20,
-      costPerRequest: 0.04,
-      rateLimit: 50,
-      timeoutMs: 8000,
-      status: 'degraded',
-      metadata: { avgLatency: 210, capabilities: ['kyc', 'identity'] }
-    },
-    {
-      name: 'Microblink OCR',
-      capability: 'ocr',
-      priority: 1,
-      weight: 10,
-      costPerRequest: 0.02,
-      rateLimit: 200,
-      timeoutMs: 3000,
-      status: 'down',
-      metadata: { avgLatency: 300, capabilities: ['ocr', 'document', 'ocr_data'] }
-    },
-    {
-      name: 'GlobalCheck KYC',
-      capability: 'kyc_aml',
-      priority: 3,
-      weight: 5,
-      costPerRequest: 0.03,
-      rateLimit: 500,
-      timeoutMs: 2000,
-      status: 'healthy',
-      metadata: { avgLatency: 145, capabilities: ['kyc', 'kyc_aml', 'sanctions_screening'] }
-    },
-    {
-      name: 'Acme Verification',
-      capability: 'fraud',
-      priority: 2,
-      weight: 5,
-      costPerRequest: 0.01,
-      rateLimit: 1000,
-      timeoutMs: 1500,
-      status: 'healthy',
-      metadata: { avgLatency: 80, capabilities: ['fraud'] }
-    }
+    { name: 'Stripe Identity', capability: 'kyc', priority: 1, weight: 15, costPerRequest: 0.05, rateLimit: 100, timeoutMs: 5000, status: 'healthy', metadata: { avgLatency: 120, capabilities: ['kyc', 'kyc_aml', 'identity'] } },
+    { name: 'Jumio Core', capability: 'kyc', priority: 2, weight: 15, costPerRequest: 0.04, rateLimit: 50, timeoutMs: 8000, status: 'degraded', metadata: { avgLatency: 210, capabilities: ['kyc', 'identity'] } },
+    { name: 'Microblink OCR', capability: 'ocr', priority: 1, weight: 10, costPerRequest: 0.02, rateLimit: 200, timeoutMs: 3000, status: 'down', metadata: { avgLatency: 300, capabilities: ['ocr', 'document', 'ocr_data'] } },
+    { name: 'GlobalCheck KYC', capability: 'kyc_aml', priority: 3, weight: 10, costPerRequest: 0.03, rateLimit: 500, timeoutMs: 2000, status: 'healthy', metadata: { avgLatency: 145, capabilities: ['kyc', 'kyc_aml', 'sanctions_screening'] } },
+    { name: 'Acme Verification', capability: 'fraud', priority: 2, weight: 10, costPerRequest: 0.01, rateLimit: 1000, timeoutMs: 1500, status: 'healthy', metadata: { avgLatency: 80, capabilities: ['fraud'] } },
+    { name: 'Sift Science', capability: 'fraud', priority: 1, weight: 15, costPerRequest: 0.06, rateLimit: 800, timeoutMs: 1000, status: 'healthy', metadata: { avgLatency: 60, capabilities: ['fraud', 'bot_detection'] } },
+    { name: 'Onfido', capability: 'kyc', priority: 3, weight: 5, costPerRequest: 0.08, rateLimit: 250, timeoutMs: 4000, status: 'healthy', metadata: { avgLatency: 180, capabilities: ['kyc', 'document_verification'] } },
+    { name: 'AWS Textract', capability: 'ocr', priority: 2, weight: 10, costPerRequest: 0.005, rateLimit: 5000, timeoutMs: 1200, status: 'healthy', metadata: { avgLatency: 95, capabilities: ['ocr', 'forms'] } },
+    { name: 'Clear Profile', capability: 'biometrics', priority: 1, weight: 5, costPerRequest: 0.15, rateLimit: 30, timeoutMs: 9000, status: 'degraded', metadata: { avgLatency: 800, capabilities: ['biometrics', 'face_match'] } },
+    { name: 'Veriff Identity', capability: 'kyc', priority: 4, weight: 5, costPerRequest: 0.07, rateLimit: 150, timeoutMs: 6000, status: 'healthy', metadata: { avgLatency: 190, capabilities: ['kyc', 'video_verification'] } }
   ];
 
   const createdVendors = [];

@@ -127,16 +127,21 @@ export default function VendorMetrics() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4 pt-4 border-t border-surface-high">
+                  <div className="grid grid-cols-3 gap-4 pt-4 border-t border-surface-high">
                     <div>
-                      <div className="text-xs text-outline-default mb-1">Total Requests</div>
+                      <div className="text-xs text-outline-default mb-1">Requests</div>
                       <div className="text-lg font-semibold text-surface-inverse">{total}</div>
-                      <div className="text-xs text-outline-default mt-1">Failed: <span className="text-red-400">{failCount}</span></div>
+                      <div className="text-[10px] text-outline-default mt-1">Fail: <span className="text-red-400">{failCount}</span></div>
                     </div>
                     <div>
                       <div className="text-xs text-outline-default mb-1">Avg Latency</div>
                       <div className="text-lg font-semibold text-surface-inverse">{avgLatency.toFixed(0)}ms</div>
-                      <div className="text-xs text-emerald-400 mt-1">Successful: {successCount}</div>
+                      <div className="text-[10px] text-emerald-400 mt-1">Success: {successCount}</div>
+                    </div>
+                    <div>
+                      <div className="text-xs text-outline-default mb-1">Total Spend</div>
+                      <div className="text-lg font-semibold text-surface-inverse">${(vendor.totalSpend || 0).toFixed(2)}</div>
+                      <div className="text-[10px] text-outline-default mt-1">${vendor.costPerRequest}/req</div>
                     </div>
                   </div>
                 </div>
