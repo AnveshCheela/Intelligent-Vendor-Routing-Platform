@@ -82,7 +82,7 @@ export default function VendorMetrics() {
             // Availability calculation based on success rate if there are requests, otherwise 100 if healthy
             const availability = total > 0 ? successRate : (isDown ? 0 : 100);
             const errorRate = vendor.errorRate;
-            const isHealthy = vendor.status === 'active' && successRate >= 50;
+            const isHealthy = vendor.status === 'healthy' && successRate >= 50;
 
             return (
               <div key={idx} className="card p-5">
