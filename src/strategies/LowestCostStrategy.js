@@ -29,7 +29,7 @@ export default class LowestCostStrategy extends BaseStrategy {
     return {
       vendor: selectedVendor,
       reasons: [
-        `Lowest cost: '${selectedVendor.name}' at $${selectedVendor.costPerRequest.toFixed(4)}/request`
+        `Lowest cost: '${selectedVendor.name}' at ₹${selectedVendor.costPerRequest.toFixed(4)}/request`
       ]
     };
   }
