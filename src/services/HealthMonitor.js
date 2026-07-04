@@ -3,6 +3,7 @@ import prisma from '../config/database.js';
 import VendorFactory from '../factory/VendorFactory.js';
 import cache from '../utils/cache.js';
 import logger from '../utils/logger.js';
+import SettingsService from './SettingsService.js';
 import { HEALTH_CHECK_INTERVAL_MS } from '../config/constants.js';
 
 class HealthMonitor {
@@ -80,12 +81,13 @@ class HealthMonitor {
       // Update Redis Cache
       await cache.setVendorHealth(vendorConfig.id, healthData);
 
-      // Determine new status
+      // Determine new status based on global settings
+      const settings = await SettingsService.getSettings();
       let newStatus = vendorConfig.status;
       
       if (!healthResult.isHealthy) {
         newStatus = 'down';
-      } else if (healthResult.latencyMs > 1000 || healthResult.errorRate > 5) {
+      } else if (healthResult.latencyMs > settings.latencyExclusionThreshold || healthResult.errorRate > settings.highErrorRateThreshold) {
         newStatus = 'degraded';
       } else {
         newStatus = 'healthy';

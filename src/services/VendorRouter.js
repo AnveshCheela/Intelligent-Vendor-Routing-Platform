@@ -6,6 +6,7 @@ import VendorFactory from '../factory/VendorFactory.js';
 import { normalizeResponse, normalizeError } from '../utils/normalizer.js';
 import logger from '../utils/logger.js';
 import prisma from '../config/database.js';
+import SettingsService from './SettingsService.js';
 
 class VendorRouter {
   
@@ -41,16 +42,17 @@ class VendorRouter {
       
       reasons.push(`${capableVendors.length} vendors found for '${request.capability}'`);
 
-      // 3. Apply latency threshold filter if requested
+      // 3. Apply latency threshold filter
       let candidateVendors = capableVendors;
-      if (request.max_latency_ms) {
-        candidateVendors = candidateVendors.filter(v => (v.metadata?.avgLatency || 500) <= request.max_latency_ms);
-        if (candidateVendors.length === 0) {
-          reasons.push(`All vendors exceeded max latency ${request.max_latency_ms}ms. Ignoring threshold.`);
-          candidateVendors = capableVendors; // Fallback
-        } else {
-          reasons.push(`Filtered out vendors exceeding ${request.max_latency_ms}ms`);
-        }
+      const settings = await SettingsService.getSettings();
+      const maxLatency = request.max_latency_ms || settings.latencyExclusionThreshold;
+      
+      candidateVendors = candidateVendors.filter(v => (v.metadata?.avgLatency || 500) <= maxLatency);
+      if (candidateVendors.length === 0) {
+        reasons.push(`All vendors exceeded max latency ${maxLatency}ms. Ignoring threshold.`);
+        candidateVendors = capableVendors; // Fallback
+      } else {
+        reasons.push(`Filtered out vendors exceeding ${maxLatency}ms`);
       }
 
       // 4. Get Strategy (from request preference or DB)

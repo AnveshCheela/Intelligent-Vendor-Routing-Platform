@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { API_BASE_URL } from '../utils/api.js';
 
 export default function RoutingLogs() {
   const [logs, setLogs] = useState([]);
@@ -22,7 +23,8 @@ export default function RoutingLogs() {
         strategy: strategyFilter,
         search: search
       });
-      const res = await fetch(`/api/routing-logs?${query.toString()}`);
+      
+      const res = await fetch(`${API_BASE_URL}/api/routing-logs?${query.toString()}`);
       if (!res.ok) throw new Error('Failed to fetch logs');
       const json = await res.json();
       setLogs(json.data?.logs || []);

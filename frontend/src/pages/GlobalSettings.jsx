@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useToast } from '../context/ToastContext';
+import { API_BASE_URL } from '../utils/api.js';
 
 export default function GlobalSettings() {
   const { addToast } = useToast();
@@ -16,12 +17,14 @@ export default function GlobalSettings() {
   });
 
   useEffect(() => {
-    const saved = localStorage.getItem('globalSettings');
-    if (saved) {
-      try {
-        setSettings(JSON.parse(saved));
-      } catch(e) {}
-    }
+    fetch(`${API_BASE_URL}/api/settings`)
+      .then(res => res.json())
+      .then(data => {
+        if (data && !data.error) {
+          setSettings(prev => ({ ...prev, ...data }));
+        }
+      })
+      .catch(err => console.error('Failed to load settings:', err));
   }, []);
 
   const handleChange = (e) => {
@@ -32,13 +35,24 @@ export default function GlobalSettings() {
     }));
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     setSaving(true);
-    setTimeout(() => {
-      localStorage.setItem('globalSettings', JSON.stringify(settings));
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/settings`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(settings)
+      });
+      if (res.ok) {
+        addToast('Global settings updated dynamically', 'success');
+      } else {
+        addToast('Failed to update settings', 'error');
+      }
+    } catch (err) {
+      addToast('Network error saving settings', 'error');
+    } finally {
       setSaving(false);
-      addToast('Global settings updated successfully', 'success');
-    }, 600);
+    }
   };
 
   return (

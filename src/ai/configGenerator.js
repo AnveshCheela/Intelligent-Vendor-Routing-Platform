@@ -1,5 +1,6 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import logger from '../utils/logger.js';
+import SettingsService from '../services/SettingsService.js';
 
 class AIConfigGenerator {
   constructor() {
@@ -35,7 +36,12 @@ class AIConfigGenerator {
    * @returns {Object} JSON config
    */
   async generate(prompt) {
+    const settings = await SettingsService.getSettings();
+    
     if (!this.apiKey || !this.genAI) {
+      if (settings.strictAgenticAiMode) {
+        throw new Error('Strict Agentic AI Mode is enabled, but GEMINI_API_KEY is not set.');
+      }
       logger.warn('GEMINI_API_KEY is not set. Returning mock AI config.');
       return this.getMockConfig(prompt);
     }

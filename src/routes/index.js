@@ -7,6 +7,7 @@ import strategyController from '../controllers/strategyController.js';
 import healthController from '../controllers/healthController.js';
 import simulateController from '../controllers/simulateController.js';
 import aiController from '../controllers/aiController.js';
+import settingsController from '../controllers/settingsController.js';
 
 import { validateVendor, validateRoute, validateStrategy } from '../middlewares/requestValidator.js';
 import { apiRateLimiter } from '../middlewares/rateLimiter.js';
@@ -25,6 +26,10 @@ const router = express.Router();
  *         description: System is healthy
  */
 router.get('/health', healthController.getHealth);
+
+// Global Settings
+router.get('/settings', settingsController.getSettings);
+router.put('/settings', settingsController.updateSettings);
 
 // Core Routing Endpoint
 /**

@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { API_BASE_URL } from '../utils/api.js';
 
 export default function TestRequest() {
   const defaultPayloads = {
@@ -58,7 +59,7 @@ export default function TestRequest() {
       }
 
       const startTime = performance.now();
-      const res = await fetch('/api/route', {
+      const res = await fetch(`${API_BASE_URL}/api/route`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(requestBody)

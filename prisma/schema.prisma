@@ -94,3 +94,19 @@ model RoutingRule {
 
   @@map("routing_rules")
 }
+
+/// Global system settings and configuration
+model GlobalSettings {
+  id                        String   @id @default("singleton")
+  latencyExclusionThreshold Int      @default(2000) @map("latency_exclusion_threshold")
+  defaultTimeout            Int      @default(3000) @map("default_timeout")
+  highErrorRateThreshold    Int      @default(50) @map("high_error_rate_threshold")
+  minSamplesHealthCheck     Int      @default(5) @map("min_samples_health_check")
+  cooldownMs                Int      @default(60000) @map("cooldown_ms")
+  rateLimitWindowMs         Int      @default(60000) @map("rate_limit_window_ms")
+  vendorCacheTtlMs          Int      @default(3000) @map("vendor_cache_ttl_ms")
+  strictAgenticAiMode       Boolean  @default(false) @map("strict_agentic_ai_mode")
+  updatedAt                 DateTime @updatedAt @map("updated_at")
+
+  @@map("global_settings")
+}

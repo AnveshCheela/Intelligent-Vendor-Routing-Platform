@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { API_BASE_URL } from '../utils/api.js';
 
 export default function Configuration() {
   const [activeStrategy, setActiveStrategy] = useState(null);
@@ -63,8 +64,8 @@ export default function Configuration() {
     try {
       setLoading(true);
       const [stratRes, aiRes] = await Promise.all([
-        fetch('/api/strategy/active'),
-        fetch('/api/ai/settings')
+        fetch(`${API_BASE_URL}/api/strategy/active`),
+        fetch(`${API_BASE_URL}/api/ai/settings`)
       ]);
       
       if (stratRes.ok) {
@@ -98,7 +99,7 @@ export default function Configuration() {
         config: {}
       };
 
-      const res = await fetch('/api/strategy', {
+      const res = await fetch(`${API_BASE_URL}/api/strategy`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(strategyData)
@@ -125,7 +126,7 @@ export default function Configuration() {
       
       const tempValue = aiTemperature / 100;
       
-      const res = await fetch('/api/ai/settings', {
+      const res = await fetch(`${API_BASE_URL}/api/ai/settings`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ model: aiModel, temperature: tempValue })
@@ -147,7 +148,7 @@ export default function Configuration() {
       setAiGenerating(true);
       setError(null);
       
-      const res = await fetch('/api/ai/generate-config', {
+      const res = await fetch(`${API_BASE_URL}/api/ai/generate-config`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prompt: aiPrompt })

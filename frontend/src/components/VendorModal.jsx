@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useToast } from '../context/ToastContext';
+import { API_BASE_URL } from '../utils/api.js';
 
 export default function VendorModal({ isOpen, onClose, vendor, onSave }) {
   const [formData, setFormData] = useState({
@@ -58,7 +60,7 @@ export default function VendorModal({ isOpen, onClose, vendor, onSave }) {
         rateLimit: Number(formData.rateLimit)
       };
 
-      const res = await fetch(url, {
+      const res = await fetch(`${API_BASE_URL}${url}`, {
         method,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)

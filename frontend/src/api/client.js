@@ -1,7 +1,8 @@
 import axios from 'axios';
+import { API_BASE_URL } from '../utils/api.js';
 
 const apiClient = axios.create({
-  baseURL: '/api', // Proxy is setup in vite.config.js
+  baseURL: `${API_BASE_URL}/api`, // Proxy is setup in vite.config.js for local dev
   headers: {
     'Content-Type': 'application/json',
   },
