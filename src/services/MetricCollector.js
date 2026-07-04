@@ -40,7 +40,7 @@ class MetricCollector {
       pipeline.expire(`${minuteKey}:latencies`, 3600);
       
       // Track total latency for accurate averages
-      pipeline.hincrby(allTimeKey, 'total_latency', latencyMs);
+      pipeline.hincrby(allTimeKey, 'total_latency', Math.round(latencyMs));
 
       // Track exact financial spend if the request was successful
       if (success && cost > 0) {
