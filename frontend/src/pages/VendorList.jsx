@@ -136,7 +136,7 @@ export default function VendorList() {
         <div className="card p-5 relative overflow-hidden">
           <h3 className="text-sm font-medium text-surface-inverse/70 mb-2">Monthly Spend Est.</h3>
           <div className="flex items-end justify-between mb-3">
-            <div className="text-3xl font-bold text-surface-inverse">${((summary?.monthlySpendEst || 0) / 1000).toFixed(1)}k</div>
+            <div className="text-3xl font-bold text-surface-inverse">₹{((summary?.monthlySpendEst || 0) / 1000).toFixed(1)}k</div>
           </div>
           <div className="absolute bottom-0 left-0 w-full h-1 bg-surface-low">
             <div className="h-full bg-primary" style={{ width: '65%' }}></div>
@@ -236,7 +236,7 @@ export default function VendorList() {
                       </div>
                     </td>
                     <td className="px-6 py-4 text-right font-mono text-outline-default">
-                      ${vendor.costPerRequest.toFixed(4)}
+                      ₹{vendor.costPerRequest.toFixed(4)}
                     </td>
                     <td className="px-6 py-4 text-right text-outline-default">
                       {vendor.rateLimit}/s
