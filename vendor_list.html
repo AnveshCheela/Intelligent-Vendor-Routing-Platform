@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vendors - VendorRoute Platform</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-on-surface": "#ebf1ff",
+                        "on-primary-fixed-variant": "#3323cc",
+                        "tertiary": "#7e3000",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-container": "#a44100",
+                        "surface": "#f9f9ff",
+                        "on-primary-fixed": "#0f0069",
+                        "surface-tint": "#4d44e3",
+                        "surface-variant": "#dce2f3",
+                        "on-primary": "#ffffff",
+                        "on-primary-container": "#dad7ff",
+                        "outline-variant": "#c7c4d8",
+                        "background": "#f9f9ff",
+                        "surface-bright": "#f9f9ff",
+                        "error": "#ba1a1a",
+                        "surface-container-low": "#f0f3ff",
+                        "on-surface": "#151c27",
+                        "primary-fixed-dim": "#c3c0ff",
+                        "on-surface-variant": "#464555",
+                        "surface-container-highest": "#dce2f3",
+                        "on-secondary-fixed": "#141b2b",
+                        "secondary-container": "#d9dff5",
+                        "primary": "#3525cd",
+                        "secondary": "#575e70",
+                        "primary-container": "#4f46e5",
+                        "surface-dim": "#d3daea",
+                        "on-secondary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "on-tertiary-fixed": "#351000",
+                        "on-secondary-container": "#5c6274",
+                        "outline": "#777587",
+                        "tertiary-fixed-dim": "#ffb695",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed": "#ffdbcc",
+                        "inverse-primary": "#c3c0ff",
+                        "on-secondary-fixed-variant": "#404758",
+                        "on-background": "#151c27",
+                        "surface-container-high": "#e2e8f8",
+                        "primary-fixed": "#e2dfff",
+                        "secondary-fixed-dim": "#c0c6db",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-fixed-variant": "#7b2f00",
+                        "on-tertiary-container": "#ffd2be",
+                        "surface-container": "#e7eefe",
+                        "inverse-surface": "#2a313d",
+                        "secondary-fixed": "#dce2f7"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "stack-lg": "24px",
+                        "stack-sm": "8px",
+                        "container-padding": "32px",
+                        "gutter": "24px",
+                        "stack-md": "16px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter", "sans-serif"],
+                        "code-sm": ["JetBrains Mono", "monospace"],
+                        "display-lg": ["Inter", "sans-serif"],
+                        "body-sm": ["Inter", "sans-serif"],
+                        "label-xs": ["Inter", "sans-serif"],
+                        "title-sm": ["Inter", "sans-serif"],
+                        "headline-md": ["Inter", "sans-serif"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "code-sm": ["13px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "display-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "label-xs": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "title-sm": ["18px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .table-scrollbar::-webkit-scrollbar { height: 8px; width: 8px; }
+        .table-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .table-scrollbar::-webkit-scrollbar-thumb { background-color: #c7c4d8; border-radius: 4px; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex">
+<!-- SideNavBar Component -->
+<nav class="hidden md:flex bg-inverse-surface text-primary-fixed-dim font-body-sm fixed left-0 top-0 h-full w-64 z-40 py-6 flex-col shadow-[0_4px_6px_-1px_rgba(0,0,0,0.1)]">
+<div class="px-6 mb-8 flex items-center gap-3">
+<span class="material-symbols-outlined text-surface-container-lowest text-3xl" style="font-variation-settings: 'FILL' 1;">route</span>
+<div>
+<h1 class="text-headline-md font-headline-md font-bold text-surface-container-lowest leading-tight">VendorRoute</h1>
+<p class="font-label-xs text-label-xs text-secondary-fixed-dim">Intelligent Routing</p>
+</div>
+</div>
+<div class="flex flex-col gap-1 flex-grow overflow-y-auto mt-4">
+<a class="text-on-surface-variant hover:text-surface-bright mx-2 px-4 py-2 flex items-center gap-3 rounded-lg hover:bg-on-surface-variant/10 transition-colors" href="#">
+<span class="material-symbols-outlined text-lg">dashboard</span>
+                Dashboard
+            </a>
+<a class="bg-primary text-on-primary rounded-lg mx-2 px-4 py-2 flex items-center gap-3 opacity-90 scale-95 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.1)]" href="#">
+<span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">storefront</span>
+                Vendors
+            </a>
+<a class="text-on-surface-variant hover:text-surface-bright mx-2 px-4 py-2 flex items-center gap-3 rounded-lg hover:bg-on-surface-variant/10 transition-colors" href="#">
+<span class="material-symbols-outlined text-lg">monitoring</span>
+                Metrics
+            </a>
+<a class="text-on-surface-variant hover:text-surface-bright mx-2 px-4 py-2 flex items-center gap-3 rounded-lg hover:bg-on-surface-variant/10 transition-colors" href="#">
+<span class="material-symbols-outlined text-lg">history</span>
+                Routing Logs
+            </a>
+<a class="text-on-surface-variant hover:text-surface-bright mx-2 px-4 py-2 flex items-center gap-3 rounded-lg hover:bg-on-surface-variant/10 transition-colors" href="#">
+<span class="material-symbols-outlined text-lg">settings_input_component</span>
+                Configuration
+            </a>
+<a class="text-on-surface-variant hover:text-surface-bright mx-2 px-4 py-2 flex items-center gap-3 rounded-lg hover:bg-on-surface-variant/10 transition-colors" href="#">
+<span class="material-symbols-outlined text-lg">terminal</span>
+                Test Request
+            </a>
+<a class="text-on-surface-variant hover:text-surface-bright mx-2 px-4 py-2 flex items-center gap-3 rounded-lg hover:bg-on-surface-variant/10 transition-colors" href="#">
+<span class="material-symbols-outlined text-lg">settings</span>
+                Settings
+            </a>
+</div>
+<div class="px-6 mt-auto">
+<div class="flex items-center gap-3 py-3 border-t border-on-surface-variant/20">
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface font-label-xs font-bold">
+                    OP
+                </div>
+<div class="flex flex-col">
+<span class="font-label-xs text-label-xs text-surface-container-lowest">Admin User</span>
+<span class="font-label-xs text-label-xs text-secondary-fixed-dim opacity-70">admin@vendorroute.com</span>
+</div>
+</div>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-1 md:ml-64 bg-background min-h-screen pb-12">
+<!-- Top App Bar equivalent logic (without the shell since not requested as JSON, just standard page header) -->
+<header class="bg-surface border-b border-outline-variant sticky top-0 z-30 px-gutter py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 h-auto sm:h-20">
+<div>
+<h2 class="text-display-lg font-display-lg text-on-surface">Vendors</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Manage vendor routing targets and priorities.</p>
+</div>
+<div class="flex items-center gap-3">
+<button class="bg-surface-container-lowest border border-outline-variant text-on-surface px-4 py-2 rounded-lg font-label-xs text-label-xs hover:bg-surface-container-low transition-colors shadow-sm flex items-center gap-2 h-[36px]">
+<span class="material-symbols-outlined text-[18px]">download</span>
+                    Export CSV
+                </button>
+<button class="bg-primary-container text-on-primary px-4 py-2 rounded-lg font-label-xs text-label-xs hover:opacity-90 transition-opacity shadow-sm flex items-center gap-2 h-[36px]" onclick="document.getElementById('add-vendor-modal').classList.remove('hidden')">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                    Add Vendor
+                </button>
+</div>
+</header>
+<div class="p-container-padding max-w-[1600px] mx-auto">
+<!-- Bento-style Stats Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter mb-8">
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-5 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
+<div class="flex items-center justify-between mb-3">
+<span class="font-label-xs text-label-xs text-on-surface-variant uppercase tracking-wider">Total Active</span>
+<span class="material-symbols-outlined text-outline text-xl">storefront</span>
+</div>
+<div class="text-[32px] font-bold text-on-surface leading-tight">24</div>
+<div class="mt-2 flex items-center gap-1 text-on-surface-variant font-label-xs text-label-xs">
+<span class="material-symbols-outlined text-[16px] text-[#059669]">trending_up</span>
+<span class="text-[#059669]">+2</span> this week
+                    </div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-5 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
+<div class="flex items-center justify-between mb-3">
+<span class="font-label-xs text-label-xs text-on-surface-variant uppercase tracking-wider">Degraded/Down</span>
+<span class="material-symbols-outlined text-error text-xl">warning</span>
+</div>
+<div class="text-[32px] font-bold text-on-surface leading-tight">3</div>
+<div class="mt-2 flex items-center gap-1 text-on-surface-variant font-label-xs text-label-xs">
+<span class="text-error">Action required</span> on 1 node
+                    </div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-5 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
+<div class="flex items-center justify-between mb-3">
+<span class="font-label-xs text-label-xs text-on-surface-variant uppercase tracking-wider">Avg Latency</span>
+<span class="material-symbols-outlined text-outline text-xl">timer</span>
+</div>
+<div class="text-[32px] font-bold text-on-surface leading-tight flex items-baseline gap-1">
+                        142 <span class="text-title-sm font-title-sm text-outline">ms</span>
+</div>
+<div class="mt-2 flex items-center gap-1 text-on-surface-variant font-label-xs text-label-xs">
+                        Across top 5 active routes
+                    </div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-5 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
+<div class="flex items-center justify-between mb-3">
+<span class="font-label-xs text-label-xs text-on-surface-variant uppercase tracking-wider">Monthly Spend</span>
+<span class="material-symbols-outlined text-outline text-xl">payments</span>
+</div>
+<div class="text-[32px] font-bold text-on-surface leading-tight flex items-baseline gap-1">
+                        $4.2k <span class="text-title-sm font-title-sm text-outline">est</span>
+</div>
+<div class="mt-2 flex items-center gap-1 text-on-surface-variant font-label-xs text-label-xs w-full bg-surface-container-highest rounded-full h-1.5 mt-3">
+<div class="bg-primary-container h-1.5 rounded-full" style="width: 65%;"></div>
+</div>
+</div>
+</div>
+<!-- Table Container -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] overflow-hidden flex flex-col">
+<!-- Table Controls Header -->
+<div class="p-4 border-b border-outline-variant flex flex-col sm:flex-row justify-between items-center gap-4 bg-surface-container-low/50">
+<div class="relative w-full sm:w-72">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[20px]">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-container-lowest border border-outline-variant rounded-lg font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all h-[36px]" placeholder="Search vendors by name, cap, or ID..." type="text"/>
+</div>
+<div class="flex items-center gap-2 w-full sm:w-auto">
+<button class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-3 py-1.5 border border-outline-variant rounded-lg bg-surface-container-lowest font-label-xs text-label-xs text-on-surface hover:bg-surface-container-low h-[36px]">
+<span class="material-symbols-outlined text-[18px]">filter_list</span> Filter
+                        </button>
+<select class="flex-1 sm:flex-none border border-outline-variant rounded-lg bg-surface-container-lowest font-label-xs text-label-xs text-on-surface px-3 py-1.5 h-[36px] outline-none focus:border-primary">
+<option>All Capabilities</option>
+<option>KYC</option>
+<option>OCR</option>
+<option>Fraud</option>
+</select>
+</div>
+</div>
+<!-- Actual Table -->
+<div class="overflow-x-auto table-scrollbar">
+<table class="w-full text-left border-collapse min-w-[1000px]">
+<thead>
+<tr class="bg-surface-container-highest border-b border-outline-variant font-label-xs text-label-xs text-on-surface-variant uppercase tracking-wider">
+<th class="px-5 py-3 font-medium w-[250px]">Vendor Name</th>
+<th class="px-5 py-3 font-medium">Capability</th>
+<th class="px-5 py-3 font-medium text-center">Priority</th>
+<th class="px-5 py-3 font-medium text-right">Weight</th>
+<th class="px-5 py-3 font-medium text-right">Cost</th>
+<th class="px-5 py-3 font-medium">Rate Limit</th>
+<th class="px-5 py-3 font-medium text-center">Status</th>
+<th class="px-5 py-3 font-medium text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="font-body-sm text-body-sm divide-y divide-outline-variant">
+<!-- Row 1: Healthy -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-5 py-3">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-[#111827] text-white flex items-center justify-center font-bold text-xs shrink-0">SW</div>
+<div>
+<div class="font-medium text-on-surface">Stripe Identity</div>
+<div class="font-code-sm text-code-sm text-outline">vid_9k2a1</div>
+</div>
+</div>
+</td>
+<td class="px-5 py-3">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-secondary-container text-on-secondary-container border border-outline-variant/30">
+                                        KYC / AML
+                                    </span>
+</td>
+<td class="px-5 py-3 text-center">
+<div class="flex items-center justify-center text-primary font-bold">1</div>
+</td>
+<td class="px-5 py-3 text-right font-medium">80%</td>
+<td class="px-5 py-3 text-right font-code-sm text-code-sm">$0.05/req</td>
+<td class="px-5 py-3 font-code-sm text-code-sm text-on-surface-variant">
+                                    100<span class="text-outline">/s</span>
+</td>
+<td class="px-5 py-3">
+<div class="flex justify-center">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-[#ecfdf5] text-[#065f46] border border-[#a7f3d0]">
+<span class="w-1.5 h-1.5 rounded-full bg-[#10b981]"></span>
+                                            Healthy
+                                        </span>
+</div>
+</td>
+<td class="px-5 py-3 text-right">
+<div class="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1.5 text-outline hover:text-primary hover:bg-surface-container-high rounded transition-colors" title="Edit">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1.5 text-outline hover:text-primary hover:bg-surface-container-high rounded transition-colors" title="Metrics">
+<span class="material-symbols-outlined text-[18px]">monitoring</span>
+</button>
+<button class="p-1.5 text-outline hover:text-error hover:bg-error-container/50 rounded transition-colors" title="Disable">
+<span class="material-symbols-outlined text-[18px]">block</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 2: Degraded -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-5 py-3">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-[#f59e0b] text-white flex items-center justify-center font-bold text-xs shrink-0">JC</div>
+<div>
+<div class="font-medium text-on-surface">Jumio Core</div>
+<div class="font-code-sm text-code-sm text-outline">vid_7x4b9</div>
+</div>
+</div>
+</td>
+<td class="px-5 py-3">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-secondary-container text-on-secondary-container border border-outline-variant/30">
+                                        KYC
+                                    </span>
+</td>
+<td class="px-5 py-3 text-center">
+<div class="flex items-center justify-center text-on-surface-variant font-medium">2</div>
+</td>
+<td class="px-5 py-3 text-right font-medium">20%</td>
+<td class="px-5 py-3 text-right font-code-sm text-code-sm">$0.04/req</td>
+<td class="px-5 py-3 font-code-sm text-code-sm text-on-surface-variant">
+                                    50<span class="text-outline">/s</span>
+</td>
+<td class="px-5 py-3">
+<div class="flex justify-center">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-[#fffbeb] text-[#92400e] border border-[#fde68a]">
+<span class="w-1.5 h-1.5 rounded-full bg-[#f59e0b] animate-pulse"></span>
+                                            Degraded
+                                        </span>
+</div>
+</td>
+<td class="px-5 py-3 text-right">
+<div class="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1.5 text-outline hover:text-primary hover:bg-surface-container-high rounded transition-colors" title="Edit">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1.5 text-outline hover:text-primary hover:bg-surface-container-high rounded transition-colors" title="Metrics">
+<span class="material-symbols-outlined text-[18px]">monitoring</span>
+</button>
+<button class="p-1.5 text-outline hover:text-error hover:bg-error-container/50 rounded transition-colors" title="Disable">
+<span class="material-symbols-outlined text-[18px]">block</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 3: Down -->
+<tr class="hover:bg-surface-container-low transition-colors group bg-error-container/10">
+<td class="px-5 py-3">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-error text-white flex items-center justify-center font-bold text-xs shrink-0">MR</div>
+<div>
+<div class="font-medium text-on-surface">Microblink OCR</div>
+<div class="font-code-sm text-code-sm text-outline">vid_2c1d8</div>
+</div>
+</div>
+</td>
+<td class="px-5 py-3">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-secondary-container text-on-secondary-container border border-outline-variant/30">
+                                        OCR / Data
+                                    </span>
+</td>
+<td class="px-5 py-3 text-center">
+<div class="flex items-center justify-center text-on-surface-variant font-medium">1</div>
+</td>
+<td class="px-5 py-3 text-right font-medium text-error">0%</td>
+<td class="px-5 py-3 text-right font-code-sm text-code-sm">$0.02/req</td>
+<td class="px-5 py-3 font-code-sm text-code-sm text-on-surface-variant">
+                                    200<span class="text-outline">/s</span>
+</td>
+<td class="px-5 py-3">
+<div class="flex justify-center">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-[#fef2f2] text-[#991b1b] border border-[#fecaca]">
+<span class="w-1.5 h-1.5 rounded-full bg-[#ef4444]"></span>
+                                            Down
+                                        </span>
+</div>
+</td>
+<td class="px-5 py-3 text-right">
+<div class="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1.5 text-outline hover:text-primary hover:bg-surface-container-high rounded transition-colors" title="Edit">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1.5 text-outline hover:text-primary hover:bg-surface-container-high rounded transition-colors" title="Metrics">
+<span class="material-symbols-outlined text-[18px]">monitoring</span>
+</button>
+<button class="p-1.5 text-outline hover:text-error hover:bg-error-container/50 rounded transition-colors" title="Disable">
+<span class="material-symbols-outlined text-[18px]">block</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="p-4 border-t border-outline-variant flex items-center justify-between bg-surface-container-lowest">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Showing 1-3 of 24 vendors</span>
+<div class="flex items-center gap-1">
+<button class="p-1.5 border border-outline-variant rounded hover:bg-surface-container-low disabled:opacity-50 text-on-surface">
+<span class="material-symbols-outlined text-sm">chevron_left</span>
+</button>
+<button class="px-3 py-1 bg-primary text-on-primary rounded font-label-xs text-label-xs">1</button>
+<button class="px-3 py-1 text-on-surface hover:bg-surface-container-low rounded font-label-xs text-label-xs">2</button>
+<button class="px-3 py-1 text-on-surface hover:bg-surface-container-low rounded font-label-xs text-label-xs">3</button>
+<button class="p-1.5 border border-outline-variant rounded hover:bg-surface-container-low text-on-surface">
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Modal: Add Vendor -->
+<div class="hidden fixed inset-0 z-50 flex items-center justify-center" id="add-vendor-modal">
+<!-- Backdrop -->
+<div class="absolute inset-0 bg-[#151c27]/60 backdrop-blur-sm" onclick="document.getElementById('add-vendor-modal').classList.add('hidden')"></div>
+<!-- Modal Content -->
+<div class="relative bg-surface-container-lowest rounded-xl shadow-[0_20px_25px_-5px_rgba(0,0,0,0.2)] w-full max-w-[600px] m-4 flex flex-col max-h-[921px]">
+<div class="px-6 py-4 border-b border-outline-variant flex justify-between items-center">
+<h3 class="text-title-sm font-title-sm text-on-surface">Add New Vendor Node</h3>
+<button class="text-outline hover:text-on-surface transition-colors" onclick="document.getElementById('add-vendor-modal').classList.add('hidden')">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="p-6 overflow-y-auto flex-1 font-body-sm text-body-sm">
+<form class="space-y-5">
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+<div class="space-y-1">
+<label class="font-label-xs text-label-xs text-on-surface-variant font-medium">Vendor Name</label>
+<input class="w-full px-3 py-2 bg-surface border border-outline-variant rounded-md text-on-surface placeholder:text-outline focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none" placeholder="e.g. Acme Verification" type="text"/>
+</div>
+<div class="space-y-1">
+<label class="font-label-xs text-label-xs text-on-surface-variant font-medium">Capability Focus</label>
+<select class="w-full px-3 py-2 bg-surface border border-outline-variant rounded-md text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none">
+<option>KYC / Identity</option>
+<option>OCR / Document</option>
+<option>Fraud Detection</option>
+<option>Sanctions Screening</option>
+</select>
+</div>
+</div>
+<div class="p-4 bg-surface-container-low border border-outline-variant rounded-lg space-y-4">
+<h4 class="font-label-xs text-label-xs text-on-surface uppercase tracking-wide font-bold">Routing Configuration</h4>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+<div class="space-y-1">
+<label class="font-label-xs text-label-xs text-on-surface-variant font-medium">Priority Level (1-5)</label>
+<input class="w-full px-3 py-2 bg-surface border border-outline-variant rounded-md text-on-surface font-code-sm text-code-sm focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none" max="5" min="1" type="number" value="1"/>
+<p class="text-[11px] text-outline mt-1">Lower number = higher priority.</p>
+</div>
+<div class="space-y-1">
+<label class="font-label-xs text-label-xs text-on-surface-variant font-medium">Traffic Weight (%)</label>
+<input class="w-full px-3 py-2 bg-surface border border-outline-variant rounded-md text-on-surface font-code-sm text-code-sm focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none" max="100" min="0" type="number" value="100"/>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+<div class="space-y-1">
+<label class="font-label-xs text-label-xs text-on-surface-variant font-medium">Est. Cost ($/req)</label>
+<input class="w-full px-3 py-2 bg-surface border border-outline-variant rounded-md text-on-surface font-code-sm text-code-sm focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none" placeholder="0.05" type="text"/>
+</div>
+<div class="space-y-1">
+<label class="font-label-xs text-label-xs text-on-surface-variant font-medium">Timeout (ms)</label>
+<input class="w-full px-3 py-2 bg-surface border border-outline-variant rounded-md text-on-surface font-code-sm text-code-sm focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none" placeholder="5000" type="number"/>
+</div>
+<div class="space-y-1">
+<label class="font-label-xs text-label-xs text-on-surface-variant font-medium">Rate Limit (req/s)</label>
+<input class="w-full px-3 py-2 bg-surface border border-outline-variant rounded-md text-on-surface font-code-sm text-code-sm focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none" placeholder="100" type="number"/>
+</div>
+</div>
+<div class="pt-2">
+<div class="bg-[#111827] text-white p-3 rounded-md font-code-sm text-code-sm">
+<div class="text-[#a3defe]">// JSON Payload Preview</div>
+<div>{</div>
+<div class="pl-4"><span class="text-[#fca5a5]">"name"</span>: <span class="text-[#86efac]">"Acme Verification"</span>,</div>
+<div class="pl-4"><span class="text-[#fca5a5]">"priority"</span>: <span class="text-[#fcd34d]">1</span>,</div>
+<div class="pl-4"><span class="text-[#fca5a5]">"weight"</span>: <span class="text-[#fcd34d]">100</span></div>
+<div>}</div>
+</div>
+</div>
+</form>
+</div>
+<div class="px-6 py-4 border-t border-outline-variant flex justify-end gap-3 bg-surface-container-low/50 rounded-b-xl">
+<button class="px-4 py-2 bg-surface-container-lowest border border-outline-variant rounded-lg font-label-xs text-label-xs text-on-surface hover:bg-surface transition-colors" onclick="document.getElementById('add-vendor-modal').classList.add('hidden')">Cancel</button>
+<button class="px-4 py-2 bg-primary-container text-on-primary rounded-lg font-label-xs text-label-xs hover:opacity-90 transition-opacity flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">save</span>
+                    Register Vendor
+                </button>
+</div>
+</div>
+</div>
+</body></html>

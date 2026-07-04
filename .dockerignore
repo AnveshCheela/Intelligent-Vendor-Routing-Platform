@@ -1,0 +1,10 @@
+node_modules
+npm-debug.log
+logs
+.env
+.git
+.gitignore
+frontend/node_modules
+frontend/dist
+*.md
+docker-compose.yml

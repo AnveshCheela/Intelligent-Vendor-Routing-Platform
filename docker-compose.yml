@@ -1,0 +1,76 @@
+version: '3.8'
+
+services:
+  # ── PostgreSQL Database ──
+  postgres:
+    image: postgres:15-alpine
+    container_name: vendorroute-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: vendorroute
+      POSTGRES_PASSWORD: vendorroute123
+      POSTGRES_DB: vendorroute_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U vendorroute -d vendorroute_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── Redis Cache ──
+  redis:
+    image: redis:7-alpine
+    container_name: vendorroute-redis
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── Backend API Server ──
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vendorroute-backend
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+      DATABASE_URL: "postgresql://vendorroute:vendorroute123@postgres:5432/vendorroute_db?schema=public"
+      REDIS_URL: "redis://redis:6379"
+      GEMINI_API_KEY: "${GEMINI_API_KEY}"
+      JWT_SECRET: "${JWT_SECRET:-production-secret-change-me}"
+      HEALTH_CHECK_INTERVAL_MS: 30000
+      RATE_LIMIT_WINDOW_MS: 60000
+      RATE_LIMIT_MAX_REQUESTS: 100
+      LOG_LEVEL: info
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./logs:/app/logs
+
+  # ── Frontend Dashboard ──
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: vendorroute-frontend
+    restart: unless-stopped
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
+  redis_data:

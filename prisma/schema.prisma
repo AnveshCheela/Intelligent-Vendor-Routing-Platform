@@ -1,0 +1,96 @@
+// ─── Prisma Schema ───
+// Intelligent Vendor Routing Platform
+// Database: PostgreSQL
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/// Vendor registration and configuration
+model Vendor {
+  id             String   @id @default(uuid())
+  name           String
+  baseUrl        String   @default("") @map("base_url")
+  capability     String   // e.g., "kyc", "ocr", "fraud", "aml"
+  priority       Int      @default(1) // 1 = highest priority
+  weight         Float    @default(1.0) // traffic weight (0-100)
+  costPerRequest Float    @default(0.0) @map("cost_per_request")
+  rateLimit      Int      @default(100) @map("rate_limit") // requests per second
+  timeoutMs      Int      @default(5000) @map("timeout_ms")
+  status         String   @default("healthy") // healthy, degraded, down
+  metadata       Json?    @default("{}")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  metrics    VendorMetric[]
+  routingLogs RoutingLog[]
+
+  @@map("vendors")
+}
+
+/// Time-series vendor performance metrics
+model VendorMetric {
+  id             String   @id @default(uuid())
+  vendorId       String   @map("vendor_id")
+  avgLatencyMs   Float    @default(0) @map("avg_latency_ms")
+  p95LatencyMs   Float    @default(0) @map("p95_latency_ms")
+  successRate    Float    @default(100) @map("success_rate")
+  errorRate      Float    @default(0) @map("error_rate")
+  availability   Float    @default(100)
+  requestsPerMin Int      @default(0) @map("requests_per_min")
+  costTotal      Float    @default(0) @map("cost_total")
+  recordedAt     DateTime @default(now()) @map("recorded_at")
+
+  // Relations
+  vendor Vendor @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+
+  @@index([vendorId, recordedAt])
+  @@map("vendor_metrics")
+}
+
+/// Log of every routing decision
+model RoutingLog {
+  id              String   @id @default(uuid())
+  requestId       String   @map("request_id")
+  vendorId        String?  @map("vendor_id")
+  capability      String
+  strategyUsed    String   @map("strategy_used")
+  reason          String[] // array of reasoning strings
+  latencyMs       Float    @default(0) @map("latency_ms")
+  cost            Float    @default(0)
+  status          String   @default("success") // success, failed, timeout
+  statusCode      Int      @default(200) @map("status_code")
+  fallbackReason  String?  @map("fallback_reason")
+  requestPayload  Json?    @map("request_payload")
+  responsePayload Json?    @map("response_payload")
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  // Relations
+  vendor Vendor? @relation(fields: [vendorId], references: [id], onDelete: SetNull)
+
+  @@index([requestId])
+  @@index([vendorId])
+  @@index([createdAt])
+  @@index([capability])
+  @@map("routing_logs")
+}
+
+/// Routing strategy configuration rules
+model RoutingRule {
+  id        String   @id @default(uuid())
+  name      String
+  strategy  String   // priority, weighted, round_robin, lowest_latency, lowest_cost, feature_based, health_based
+  config    Json     @default("{}")
+  isActive  Boolean  @default(false) @map("is_active")
+  version   String   @default("1.0.0")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("routing_rules")
+}
