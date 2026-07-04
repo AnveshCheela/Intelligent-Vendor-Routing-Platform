@@ -1,6 +1,6 @@
 import BaseStrategy from './BaseStrategy.js';
 import { STRATEGY_NAMES } from '../config/constants.js';
-import cache from '../utils/cache.js';
+import MetricCollector from '../services/MetricCollector.js';
 
 export default class LowestLatencyStrategy extends BaseStrategy {
   
@@ -17,12 +17,12 @@ export default class LowestLatencyStrategy extends BaseStrategy {
     let lowestLatency = Infinity;
     const latencyMap = {};
 
-    // Fetch health data (which contains recent latency) from cache for all vendors
+    // Fetch real traffic data from Redis for all vendors
     for (const vendor of vendors) {
-      const healthData = await cache.getVendorHealth(vendor.id);
+      const metrics = await MetricCollector.getVendorMetrics(vendor.id);
       
       // Fallback to static latency from config if no live data
-      const latency = healthData?.latencyMs || vendor.metadata?.avgLatency || 500;
+      const latency = metrics?.avgLatencyMs || vendor.metadata?.avgLatency || 500;
       latencyMap[vendor.name] = latency;
       
       if (latency < lowestLatency) {
