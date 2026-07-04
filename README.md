@@ -8,6 +8,7 @@ A production-grade, AI-powered load balancer and traffic director designed to dy
 - **Automatic Failover**: Instantly detects offline or degraded vendors and reroutes traffic to healthy alternatives.
 - **Interactive Dashboard**: Built with React & Vite to monitor active vendors, live traffic distribution, and latency trends.
 - **Robust Backend**: Node.js, Express, PostgreSQL (Prisma), and Redis caching.
+- **Continuous Integration / Continuous Deployment (CI/CD)**: Automated GitHub Actions pipeline to test backend routing logic, build frontend assets, and verify Docker containers on every commit.
 
 ## Mandatory APIs Included
 - `POST /api/vendors` - Register a new vendor with capabilities, rate limits, cost, and priority.
@@ -106,6 +107,12 @@ erDiagram
     VENDOR ||--o{ VENDOR_METRIC : "tracks"
     VENDOR ||--o{ ROUTING_LOG : "receives"
 ```
+
+## 🚀 CI/CD Pipeline (GitHub Actions)
+This repository is equipped with a production-ready Continuous Integration and Continuous Deployment (CI/CD) pipeline located at `.github/workflows/ci.yml`. On every `push` and `pull_request` to the `main` branch, GitHub Actions automatically provisions an Ubuntu runner to execute:
+1. **Backend Tests:** Spins up ephemeral PostgreSQL and Redis instances, runs Prisma migrations, and executes `npm run test` against the routing engine.
+2. **Frontend Builds:** Resolves dependencies and builds the React/Vite dashboard to ensure code compiles flawlessly.
+3. **Docker Verification:** Performs a clean `docker compose build` to validate the containerization architecture.
 
 ---
 
