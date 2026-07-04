@@ -25,5 +25,5 @@ EXPOSE 3001
 HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
   CMD wget --no-verbose --tries=1 --spider http://localhost:3001/api/health || exit 1
 
-# Start with migration and seed
-CMD ["sh", "-c", "npx prisma db push --accept-data-loss && node prisma/seed.js && node src/index.js"]
+# Start with migration
+CMD ["sh", "-c", "npx prisma db push --accept-data-loss && node src/index.js"]
