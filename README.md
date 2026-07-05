@@ -1,5 +1,13 @@
 # Intelligent Vendor Routing Platform
 
+![Live Status](https://img.shields.io/badge/Status-Live-success?style=for-the-badge)
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
+![Redis](https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white)
+
+**🌐 Live Production Dashboard:** [https://frontend-drab-psi-qrk3ksyoio.vercel.app/](https://frontend-drab-psi-qrk3ksyoio.vercel.app/)
+
 A production-grade, AI-powered load balancer and traffic director designed to dynamically route API requests to third-party vendors (e.g., KYC, OCR, Fraud Detection) based on real-time latency, cost optimization, capability matching, and mathematical weighting.
 
 ## Key Features
@@ -8,6 +16,8 @@ A production-grade, AI-powered load balancer and traffic director designed to dy
 - **Automatic Failover**: Instantly detects offline or degraded vendors and reroutes traffic to healthy alternatives.
 - **Interactive Dashboard**: Built with React & Vite to monitor active vendors, live traffic distribution, and latency trends.
 - **Robust Backend**: Node.js, Express, PostgreSQL (Prisma), and Redis caching.
+- **Dynamic Global Settings**: Modify core routing thresholds (latency, timeouts) via PostgreSQL in real-time without server restarts.
+- **Strict Agentic AI Mode**: Enforce deterministic safety rails to prevent AI fallback generation when API keys are missing.
 - **Continuous Integration / Continuous Deployment (CI/CD)**: Automated GitHub Actions pipeline to test backend routing logic, build frontend assets, and verify Docker containers on every commit.
 
 ## Mandatory APIs Included
@@ -17,6 +27,8 @@ A production-grade, AI-powered load balancer and traffic director designed to dy
 - `GET /api/vendor-metrics` - Retrieve system health and routing statistics.
 - `GET /api/routing-logs` - Retrieve a history of all routing decisions.
 - `GET /api/health` - System health check.
+- `GET /api/settings` - Retrieve global routing settings.
+- `PUT /api/settings` - Update global routing settings.
 
 ---
 
@@ -31,7 +43,9 @@ graph TD
         API -->|Validates| RateLimiter[Redis Rate Limiter]
         RateLimiter --> RoutingEngine[Dynamic Routing Engine]
         
-        RoutingEngine -->|Reads Config| DB[(PostgreSQL)]
+        RoutingEngine -->|Reads Settings| SettingsCache[(Redis Settings Cache)]
+        SettingsCache -->|Refreshes From| DB[(PostgreSQL)]
+        RoutingEngine -->|Reads Config| DB
         RoutingEngine -->|Reads Latency| Cache[(Redis Metrics)]
         
         RoutingEngine -->|Fallback & AI| Gemini[Google Gemini AI]
