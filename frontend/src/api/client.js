@@ -1,8 +1,7 @@
 import axios from 'axios';
-import { API_BASE_URL } from '../utils/api.js';
 
 const apiClient = axios.create({
-  baseURL: `${API_BASE_URL}/api`, // Proxy is setup in vite.config.js for local dev
+  baseURL: 'https://vendor-routing-api.onrender.com/api',
   headers: {
     'Content-Type': 'application/json',
   },

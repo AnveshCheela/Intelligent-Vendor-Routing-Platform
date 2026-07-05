@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useToast } from '../context/ToastContext';
-import { API_BASE_URL } from '../utils/api.js';
 
 export default function VendorModal({ isOpen, onClose, vendor, onSave }) {
   const [formData, setFormData] = useState({
@@ -49,7 +48,7 @@ export default function VendorModal({ isOpen, onClose, vendor, onSave }) {
       if (!formData.name) throw new Error('Vendor name is required');
       
       const isEdit = !!vendor;
-      const url = isEdit ? `/api/vendors/${vendor.id}` : '/api/vendors';
+      const url = isEdit ? `https://vendor-routing-api.onrender.com/api/vendors/${vendor.id}` : 'https://vendor-routing-api.onrender.com/api/vendors';
       const method = isEdit ? 'PUT' : 'POST';
       
       const payload = {
@@ -60,7 +59,7 @@ export default function VendorModal({ isOpen, onClose, vendor, onSave }) {
         rateLimit: Number(formData.rateLimit)
       };
 
-      const res = await fetch(`${API_BASE_URL}${url}`, {
+      const res = await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)

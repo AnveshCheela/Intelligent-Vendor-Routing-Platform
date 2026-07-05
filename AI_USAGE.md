@@ -14,9 +14,12 @@ Instead of requiring system administrators to manually write complex JSON syntax
 ### Prompt Engineering
 We utilize structured prompt engineering to guarantee deterministic output. We explicitly provide the schema interface (e.g. `strategy: 'weighted'`, `weights: { Vendor: % }`) so the AI knows exactly what keys to map the English numbers to.
 
-## 2. Graceful Degradation
+## 2. Graceful Degradation & Strict Mode
 To ensure enterprise stability, the AI integration is strictly decoupled from the core routing path.
 If the Gemini API key is missing, expired, or rate-limited (e.g., HTTP 400 or 429), the `aiController` catches the exception and falls back to a deterministic `getMockConfig()` function. This prevents a third-party AI failure from taking down the routing dashboard.
+
+### Strict Agentic AI Mode
+Administrators can enable `strictAgenticAiMode` via the Global Settings UI. When enabled, the system enforces rigid safety rails: it completely disables the `getMockConfig()` fallback. If an API key is missing or the AI fails, the system deliberately throws a hard error rather than allowing a mock configuration to slip into a production environment undetected.
 
 ## Future Possibilities
 While the current integration focuses on configuration generation, the framework is designed to support:

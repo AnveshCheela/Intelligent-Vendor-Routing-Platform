@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { API_BASE_URL } from '../utils/api.js';
+import React, { useState } from 'react';
 
 export default function TestRequest() {
   const defaultPayloads = {
@@ -59,7 +58,7 @@ export default function TestRequest() {
       }
 
       const startTime = performance.now();
-      const res = await fetch(`${API_BASE_URL}/api/route`, {
+      const res = await fetch('https://vendor-routing-api.onrender.com/api/route', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(requestBody)

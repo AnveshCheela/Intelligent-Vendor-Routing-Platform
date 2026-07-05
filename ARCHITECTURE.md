@@ -20,6 +20,8 @@ graph TD
     
     subgraph "Data & State"
         Router -->|Logs Decision| Postgres[(PostgreSQL)]
+        Router -->|Reads Settings| SettingsCache[(Redis Settings Cache)]
+        SettingsCache -->|Refreshes From| Postgres
         Router -->|Reads Health/Metrics| Redis[(Redis Cache)]
     end
     

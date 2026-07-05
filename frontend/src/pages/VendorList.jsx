@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '../api/client';
-import { API_BASE_URL } from '../utils/api.js';
 import StatusBadge from '../components/StatusBadge';
 import VendorModal from '../components/VendorModal';
 import { useToast } from '../context/ToastContext';
@@ -59,7 +58,7 @@ export default function VendorList() {
     if (!window.confirm(`Are you sure you want to block/delete vendor: ${name}?`)) return;
     
     try {
-      const res = await fetch(`${API_BASE_URL}/api/vendors/${id}`, { method: 'DELETE' });
+      const res = await fetch(`https://vendor-routing-api.onrender.com/api/vendors/${id}`, { method: 'DELETE' });
       if (!res.ok) throw new Error('Failed to delete vendor');
       addToast(`${name} has been deleted successfully.`, 'success');
       fetchData();

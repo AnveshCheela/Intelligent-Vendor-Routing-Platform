@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useToast } from '../context/ToastContext';
-import { API_BASE_URL } from '../utils/api.js';
 
 export default function GlobalSettings() {
   const { addToast } = useToast();
@@ -17,7 +16,7 @@ export default function GlobalSettings() {
   });
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/api/settings`)
+    fetch('/api/settings')
       .then(res => res.json())
       .then(data => {
         if (data && !data.error) {
@@ -38,7 +37,7 @@ export default function GlobalSettings() {
   const handleSave = async () => {
     setSaving(true);
     try {
-      const res = await fetch(`${API_BASE_URL}/api/settings`, {
+      const res = await fetch('/api/settings', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(settings)

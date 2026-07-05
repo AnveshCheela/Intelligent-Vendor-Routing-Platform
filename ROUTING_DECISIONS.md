@@ -5,6 +5,9 @@ The Intelligent Vendor Routing Platform utilizes a multi-strategy routing engine
 ## Strategy Evaluation Hierarchy
 When `POST /api/route` is called, the `VendorRouter` executes the active strategy. If no specific strategy is requested by the client, it defaults to the system-wide active strategy (e.g., `LowestCost` or `Weighted`).
 
+### 0. Global Threshold Pre-Filter
+Before any strategy algorithm runs, the `RoutingEngine` fetches the `latencyExclusionThreshold` from the dynamic `SettingsService` (cached via Redis). Any vendor whose `p95LatencyMs` exceeds this threshold is immediately excluded from the pool of candidates. This guarantees that no strategy can accidentally route traffic to a severely degraded vendor.
+
 ### 1. Lowest Latency Strategy
 - **Decision Logic:** The system queries the Redis time-series database to retrieve the `p95LatencyMs` (the 95th percentile latency over the last rolling window) for all healthy vendors matching the requested `capability`.
 - **Selection:** It strictly sorts the array ascending by latency and selects the lowest value. This prioritizes speed and user experience over financial cost.

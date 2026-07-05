@@ -106,3 +106,41 @@ Content-Type: application/json
   }
 }
 ```
+
+## 4. Get Global Settings (GET `/api/settings`)
+**Request:**
+```http
+GET /api/settings
+```
+
+**Response (200 OK):**
+```json
+{
+  "circuitBreakerErrorThreshold": 0.5,
+  "circuitBreakerTimeoutMs": 30000,
+  "healthCheckIntervalMs": 10000,
+  "latencyExclusionThreshold": 2000,
+  "highErrorRateThreshold": 0.3,
+  "strictAgenticAiMode": true
+}
+```
+
+## 5. Update Global Settings (PUT `/api/settings`)
+**Request:**
+```http
+PUT /api/settings
+Content-Type: application/json
+
+{
+  "latencyExclusionThreshold": 50,
+  "strictAgenticAiMode": false
+}
+```
+
+**Response (200 OK):**
+```json
+{
+  "success": true,
+  "message": "Global settings updated"
+}
+```
